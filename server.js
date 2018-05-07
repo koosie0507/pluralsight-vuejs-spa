@@ -9,6 +9,8 @@ const indexHTML = (function readIndexHtmlFile() {
 
 app.use("/dist", express.static(path.resolve(__dirname, "./dist")));
 
+require(path.resolve(__dirname, "./build/dev-server"))(app);
+
 app.get('*', function (req, res) {
   res.write(indexHTML);
   res.end();
