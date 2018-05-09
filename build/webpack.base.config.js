@@ -4,6 +4,11 @@ const config = {
   entry: {
     app: path.resolve(__dirname, "../src/client-entry.js")
   },
+  module: {
+    rules: [
+      { test: /(\.js$)/, loader: "eslint-loader", exclude: /node_modules/, enforce: "pre" },
+    ]
+  },
   resolve: {
     alias: {
       vue: "vue/dist/vue.js"
