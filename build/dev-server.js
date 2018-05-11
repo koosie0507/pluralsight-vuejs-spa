@@ -6,6 +6,7 @@ module.exports = function setupDevServer(app) {
     "webpack-hot-middleware/client",
     clientConfig.entry.app
   ];
+  clientConfig.mode = 'development';
   clientConfig.plugins.push(
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin()
