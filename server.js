@@ -3,7 +3,7 @@ const app = express()
 const bodyParser = require('body-parser')
 const fs = require('fs')
 const path = require('path')
-const routes = require('./src/server/routes')
+const routes = require('./src/api/routes')
 
 const indexHTML = (function readIndexHtmlFile () {
   return fs.readFileSync(path.resolve(__dirname, './index.html'), 'utf-8')
@@ -13,7 +13,7 @@ app.use(bodyParser.urlencoded({ extended: true}))
 app.use(bodyParser.json())
 app.use('/dist', express.static(path.resolve(__dirname, './dist')))
 
-require(path.resolve(__dirname, './build/dev-server'))(app)
+require(path.resolve(__dirname, './build/dev-api'))(app)
 
 routes(app)
 
