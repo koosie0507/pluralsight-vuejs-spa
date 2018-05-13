@@ -29,7 +29,7 @@ $warning: #D29265;
 $dark: #1D1A14;
 $text: #1D1A14;
 
-@import '~bulma';
+@import '../../../node_modules/bulma';
 
 .columns {
   flex-wrap: wrap;
