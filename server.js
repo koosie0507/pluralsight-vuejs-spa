@@ -3,6 +3,7 @@ const app = express()
 const bodyParser = require('body-parser')
 const fs = require('fs')
 const path = require('path')
+const routes = require('./src/server/routes')
 
 const indexHTML = (function readIndexHtmlFile () {
   return fs.readFileSync(path.resolve(__dirname, './index.html'), 'utf-8')
@@ -14,11 +15,7 @@ app.use('/dist', express.static(path.resolve(__dirname, './dist')))
 
 require(path.resolve(__dirname, './build/dev-server'))(app)
 
-var router = express.Router()
-router.get('/', function (req, res) {
-  res.json({message: 'API Home'})
-})
-app.use('/api', router)
+routes(app)
 
 app.get('*', function (req, res) {
   res.write(indexHTML)
