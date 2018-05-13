@@ -9,13 +9,8 @@ const config = {
     rules: [
       { test: /(\.js$)|(\.vue$)/, loader: 'eslint-loader', exclude: /node_modules/, enforce: 'pre' },
       { test: /(\.vue$)/, loader: 'vue-loader' },
-      { test: /(\.scss$)/,
-        use: [
-          'vue-style-loader',
-          'css-loader',
-          'sass-loader'
-        ]
-      },
+      { test: /(\.scss$)/, use: [ 'vue-style-loader', 'css-loader', 'sass-loader' ] },
+      { test: /(\.css$)/, use: [ 'vue-style-loader', 'css-loader' ] },
       { test: /(\.js$)/, loader: 'babel-loader', exclude: /node_modules/ }
     ]
   },
