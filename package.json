@@ -11,6 +11,7 @@
   "author": "Deployment Officer <no-reply@netmatch.nl> (http://www.netmatch.nl)",
   "license": "MIT",
   "dependencies": {
+    "body-parser": "^1.18.2",
     "bulma": "^0.7.1",
     "express": "^4.16.3",
     "vue": "^2.5.16",
