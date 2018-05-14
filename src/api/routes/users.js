@@ -1,9 +1,26 @@
 const {returnRepoData, getSecurePassword} = require('./utils')
 const {exists, nonEmptyString, firstError, findDuplicateAsync} = require('../validation/validators')
 
+function _getUserProfile (req, res) {
+  if (!req.user) {
+    return res.status(403).json({message: 'not authenticated'})
+  }
+  return this.repo.get({name: req.user.name})
+    .then(data => {
+      const result = {
+        name: data.name,
+        sandwich: data.sandwich,
+        role: data.role,
+        email: data.email
+      }
+      return res.status(200).json(result)
+    })
+}
+
 function init (router, repo) {
   var usersRouter = require('express').Router()
 
+  usersRouter.get('/profile', require('../middleware/jwt-auth'), _getUserProfile.bind({repo}))
   usersRouter.post('/', function (req, res) {
     const user = req.body
     const validation = firstError(

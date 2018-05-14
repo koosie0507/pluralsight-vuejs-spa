@@ -7,6 +7,9 @@ const appService = {
     return axios.get(`/posts?category=${categoryId}`)
       .then(res => res.data)
   },
+  getProfile () {
+
+  },
   login (credentials) {
     return new Promise((resolve, reject) => {
       axios.post('/auth/login', credentials)
