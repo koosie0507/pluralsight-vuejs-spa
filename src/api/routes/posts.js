@@ -3,7 +3,7 @@ const {returnRepoData} = require('./utils')
 function init (router, repo) {
   var postsRouter = require('express').Router()
 
-  //postsRouter.use(require('../middleware/jwt-auth'))
+  postsRouter.use(require('../middleware/jwt-auth'))
 
   postsRouter.get('/', function (req, res) {
     returnRepoData(res, repo.list(req.query), console.log)
