@@ -30,6 +30,4 @@ function init (router, repo) {
   router.use('/posts', postsRouter)
 }
 
-module.exports = {
-  init: init
-}
+module.exports = { init }
