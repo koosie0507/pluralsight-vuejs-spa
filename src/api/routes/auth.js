@@ -1,3 +1,5 @@
+const jwt = require('jsonwebtoken')
+const config = require('../config')
 const {getPasswordHash} = require('./utils')
 const {nonEmptyString, firstError} = require('../validation/validators')
 
@@ -30,7 +32,20 @@ function _login (req, res) {
       return user
     })
     .then((user) => {
-      res.status(200).send(`user '${user.name}' verified`)
+      const token = jwt.sign({
+        name: user.name,
+        email: user.email,
+        role: user.role
+      }, config.JWT_SECRET, { expiresIn: 60 * 60 })
+      const payload = {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        sandwich: user.sandwich,
+        role: user.role,
+        token
+      }
+      res.status(200).json(payload)
     })
     .catch((err) => {
       res.status(401).json(err)
