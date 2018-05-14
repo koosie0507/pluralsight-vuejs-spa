@@ -1,5 +1,9 @@
 const mongoose = require('mongoose')
 
+function byId (MongoModel, id) {
+  return MongoModel.findById(id).exec()
+}
+
 module.exports = function MongoRepository (connectionString, entityName, meta, errorLogger) {
   mongoose.connect(connectionString, {
     autoIndex: false,
@@ -18,10 +22,15 @@ module.exports = function MongoRepository (connectionString, entityName, meta, e
     list: function () {
       return MongoModel.find().exec()
     },
+    byId: function (id) {
+      return byId(MongoModel, id)
+    },
+    get: function (conditions) {
+      return MongoModel.findOne(conditions).exec()
+    },
     save: function (entity, idMapper) {
       const id = idMapper(entity)
-      return MongoModel.findById(id)
-        .exec()
+      return byId(MongoModel, id)
         .then(function onEntityFound (dbEntity) {
           Object.assign(dbEntity, entity)
           return dbEntity.save()
