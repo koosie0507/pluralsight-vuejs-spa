@@ -35,7 +35,10 @@
         <div class="field">
           <div class="control">
             <button class="button is-primary">
-              Login
+              <span class="icon is-small">
+                <i class="fas fa-italic" />
+              </span>
+              <span>Login</span>
             </button>
           </div>
         </div>

@@ -19,8 +19,8 @@ module.exports = function MongoRepository (connectionString, entityName, meta, e
     new: function (inputData) {
       return new MongoModel(inputData).save()
     },
-    list: function () {
-      return MongoModel.find().exec()
+    list: function (conditions) {
+      return MongoModel.find(conditions).exec()
     },
     byId: function (id) {
       return byId(MongoModel, id)
