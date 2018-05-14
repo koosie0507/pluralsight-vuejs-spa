@@ -21,11 +21,23 @@ function nonEmptyString (value, message) {
   return createSuccess()
 }
 
-function firstError(...validationResults) {
+function firstError (...validationResults) {
   for (var v of validationResults) {
     if (!v.isValid) return v
   }
   return createSuccess()
 }
 
-module.exports = { exists, nonEmptyString, firstError }
+function findDuplicateAsync (repo, conditions, message) {
+  const promise = repo.get(conditions)
+    .then(function foundDuplicate (dbData) {
+      if (dbData !== null && typeof dbData !== 'undefined') {
+        const error = { message }
+        return Promise.reject(error)
+      }
+      return Promise.resolve(dbData)
+    })
+  return promise
+}
+
+module.exports = { exists, nonEmptyString, firstError, findDuplicateAsync }

@@ -1,5 +1,5 @@
 const {returnRepoData, getSecurePassword} = require('./utils')
-const {exists, nonEmptyString, firstError} = require('../validation/validators')
+const {exists, nonEmptyString, firstError, findDuplicateAsync} = require('../validation/validators')
 
 function init (router, repo) {
   var usersRouter = require('express').Router()
@@ -16,8 +16,16 @@ function init (router, repo) {
       res.status(400).json(validation)
       return
     }
-    Object.assign(user, getSecurePassword(user.password))
-    returnRepoData(res, repo.new(user), console.log, {
+
+    const promise = Promise.all([
+      findDuplicateAsync(repo, {'email': user.email}, `email '${user.email}' already exists in the database`),
+      findDuplicateAsync(repo, {'name': user.name}, `user '${user.name}' already exists in the database`)])
+      .then(function canCreateUser () {
+        Object.assign(user, getSecurePassword(user.password))
+        return repo.new(user)
+      })
+
+    returnRepoData(res, promise, console.log, {
       successCode: 201
     })
   })
