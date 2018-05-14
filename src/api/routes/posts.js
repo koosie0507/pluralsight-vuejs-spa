@@ -1,28 +1,29 @@
-const PostMeta = require('../models/post')
+function returnRepoData (res, promise, errorLogger, options) {
+  const successCode = options && options.successCode ? options.successCode : 200
+  const errorCode = options && options.errorCode ? options.errorCode : 400
+  return promise
+    .then(function onRepoDataSuccess (data) {
+      res.status(successCode).json(data)
+    })
+    .catch(function onRepoDataFailure (err) {
+      res.status(errorCode).json(err)
+      errorLogger(err)
+    })
+}
 
-function init(router, repo) {
-  const PostRepo = repo.model('Post', PostMeta)
-
+function init (router, repo) {
   var postsRouter = require('express').Router()
+
   postsRouter.get('/', function (req, res) {
-    PostRepo.find(function (err, data) {
-      if (err) {
-        res.status(400).json(err)
-      } else {
-        res.json(data)
-      }
-    })
+    returnRepoData(res, repo.list(), console.log)
   })
+
   postsRouter.post('/', function (req, res) {
-    const item = new PostRepo(req.body)
-    item.save(function (err, saved) {
-      if (err) {
-        res.status(400).json(err)
-      } else {
-        res.status(201).json(saved)
-      }
+    returnRepoData(res, repo.new(req.body), console.log, {
+      successCode: 201
     })
   })
+
   postsRouter.put('/:id', function (req, res) {
     const postId = req.params.id
     if (!req.body) {
@@ -30,22 +31,13 @@ function init(router, repo) {
     } else if (!postId) {
       res.status(400).json({message: 'must provide id'})
     } else {
-      PostRepo.findOne({id: postId}, function (err, post) {
-        if (err) {
-          res.status(400).json(err)
-        } else {
-          Object.assign(post, req.body)
-          post.save(function (err, post) {
-            if (err) {
-              res.status(400).json(err)
-            } else {
-              res.json(post)
-            }
-          })
-        }
+      returnRepoData(res, repo.save(req.body, e => postId), console.log, {
+        successCode: 200,
+        errorCode: 404
       })
     }
   })
+
   router.use('/posts', postsRouter)
 }
 
