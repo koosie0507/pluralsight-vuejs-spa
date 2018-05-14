@@ -37,12 +37,14 @@ function _login (req, res) {
         email: user.email,
         role: user.role
       }, config.JWT_SECRET, { expiresIn: 60 * 60 })
+      const verified = jwt.verify(token, config.JWT_SECRET)
       const payload = {
         id: user._id,
         name: user.name,
         email: user.email,
         sandwich: user.sandwich,
         role: user.role,
+        expiration: verified.exp,
         token
       }
       res.status(200).json(payload)

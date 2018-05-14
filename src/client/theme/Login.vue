@@ -52,8 +52,12 @@ export default {
   data () {
     return {
       name: '',
-      password: ''
+      password: '',
+      isAuthenticated: false
     }
+  },
+  created () {
+
   },
   methods: {
     login () {
