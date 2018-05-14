@@ -63,7 +63,6 @@ export default {
     return {
       name: '',
       password: '',
-      // isAuthenticated: false,
       profile: {}
     }
   },
