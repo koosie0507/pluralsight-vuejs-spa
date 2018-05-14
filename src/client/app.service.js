@@ -1,6 +1,17 @@
 import axios from 'axios'
 
 axios.defaults.baseURL = '/api'
+axios.interceptors.request.use(function (config) {
+  if (typeof window === 'undefined') {
+    return config
+  }
+
+  const token = window.localStorage.getItem('token')
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`
+  }
+  return config
+})
 
 const appService = {
   getPosts (categoryId) {
@@ -8,7 +19,12 @@ const appService = {
       .then(res => res.data)
   },
   getProfile () {
-
+    return new Promise((resolve, reject) => {
+      axios.get('/users/profile')
+        .then(response => {
+          resolve(response.data)
+        })
+    })
   },
   login (credentials) {
     return new Promise((resolve, reject) => {

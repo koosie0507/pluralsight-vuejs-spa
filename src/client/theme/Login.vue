@@ -2,6 +2,7 @@
   <div class="content">
     <div v-if="isAuthenticated">
       <h2>Hello authenticated user</h2>
+      <p>E-mail: {{profile.email}}</p>
       <button v-on:click="logout()" class="button is-primary">
         Logout
       </button>
@@ -61,14 +62,20 @@ export default {
     return {
       name: '',
       password: '',
-      isAuthenticated: false
+      isAuthenticated: false,
+      profile: {}
     }
   },
-  created () {
-    let expiration = window.localStorage.getItem('tokenExpiration')
-    let unixTimestamp = new Date().getTime() / 1000
-    if (expiration !== null && parseInt(expiration) - unixTimestamp > 0) {
-      this.isAuthenticated = true
+  watch: {
+    isAuthenticated: function (val) {
+      if (val) {
+        appService.getProfile()
+          .then(profile => {
+            this.profile = profile
+          })
+      } else {
+        this.profile = {}
+      }
     }
   },
   methods: {
@@ -87,6 +94,13 @@ export default {
       window.localStorage.setItem('token', null)
       window.localStorage.setItem('tokenExpiration', null)
       this.isAuthenticated = false
+    }
+  },
+  created () {
+    let expiration = window.localStorage.getItem('tokenExpiration')
+    let unixTimestamp = new Date().getTime() / 1000
+    if (expiration !== null && parseInt(expiration) - unixTimestamp > 0) {
+      this.isAuthenticated = true
     }
   }
 }
