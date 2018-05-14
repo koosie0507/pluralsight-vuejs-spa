@@ -56,51 +56,30 @@
   </div>
 </template>
 <script>
-import appService from '../app.service'
+import {mapGetters, mapActions} from 'vuex'
+
 export default {
   data () {
     return {
       name: '',
       password: '',
-      isAuthenticated: false,
+      // isAuthenticated: false,
       profile: {}
     }
   },
-  watch: {
-    isAuthenticated: function (val) {
-      if (val) {
-        appService.getProfile()
-          .then(profile => {
-            this.profile = profile
-          })
-      } else {
-        this.profile = {}
-      }
-    }
+  computed: {
+    ...mapGetters(['isAuthenticated'])
   },
   methods: {
+    ...mapActions({
+      logout: 'logout'
+    }),
     login () {
-      appService.login({name: this.name, password: this.password})
-        .then(data => {
-          window.localStorage.setItem('token', data.token)
-          window.localStorage.setItem('tokenExpiration', data.expiration)
-          this.isAuthenticated = true
+      this.$store.dispatch('login', {name: this.name, password: this.password})
+        .then(() => {
           this.name = ''
           this.password = ''
         })
-        .catch(() => window.alert('login failed'))
-    },
-    logout () {
-      window.localStorage.setItem('token', null)
-      window.localStorage.setItem('tokenExpiration', null)
-      this.isAuthenticated = false
-    }
-  },
-  created () {
-    let expiration = window.localStorage.getItem('tokenExpiration')
-    let unixTimestamp = new Date().getTime() / 1000
-    if (expiration !== null && parseInt(expiration) - unixTimestamp > 0) {
-      this.isAuthenticated = true
     }
   }
 }
