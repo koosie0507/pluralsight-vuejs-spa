@@ -14,6 +14,7 @@ axios.interceptors.request.use(function (config) {
 })
 
 const appService = {
+  client: axios,
   getPosts (categoryId) {
     return axios.get(`/posts?category=${categoryId}`)
       .then(res => res.data)
