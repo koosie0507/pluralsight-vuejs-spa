@@ -20,7 +20,11 @@ require(path.resolve(__dirname, './build/dev-server'))(app, bundle => {
 
 routes(app)
 
-app.get('*', function (req, res) {
+app.get('*', function (req, res, next) {
+  if (!renderer.renderToString) {
+    return next()
+  }
+
   renderer.renderToString({ url: req.url }, (err, html) => {
     if (err) {
       return res.status(500).send('SSR Error')

@@ -9,24 +9,19 @@
   </div>
 </template>
 <script>
-import appService from '../xhr/service'
 import Post from './Post.vue'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
     'app-post': Post
   },
-  data () {
-    return {
-      id: this.$route.params.id,
-      posts: []
-    }
+  computed: {
+    ...mapGetters('postsModule', ['posts'])
   },
   methods: {
     loadPosts () {
-      appService.getPosts(this.id).then(data => {
-        this.posts = data
-      })
+      this.$store.dispatch('postsModule/fetchPostsInCategory', this.$route.params.id)
     }
   },
   watch: {
