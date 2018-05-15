@@ -4,9 +4,9 @@ module.exports = function (config) {
   config.set({
     browsers: ['PhantomJS'],
     frameworks: ['mocha', 'sinon-chai'],
-    files: ['./index.js'],
+    files: ['./specs/**/*.spec.js'],
     preprocessors: {
-      './index.js': ['webpack']
+      './specs/**/*.spec.js': ['webpack']
     },
     plugins: [
       'karma-mocha', 'karma-sinon-chai', 'karma-phantomjs-launcher', 'karma-webpack'
