@@ -1,9 +1,13 @@
 import appService from '../xhr/service'
 
-const state = {
+const defaultState = {
   posts: [],
   category: ''
 }
+const inBrowser = typeof window !== 'undefined'
+const hasInitialState = inBrowser && typeof window.__INITIAL_STATE__ !== 'undefined'
+
+const state = hasInitialState ? window.__INITIAL_STATE__.postsModule : defaultState
 
 const getters = {
   posts: state => state.posts

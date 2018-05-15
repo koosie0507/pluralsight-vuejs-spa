@@ -30,7 +30,11 @@ app.get('*', function (req, res, next) {
   const context = { url: req.url }
   renderer.renderToString(context, (err, html) => {
     if (err) {
-      return res.status(500).send('SSR Error')
+      if (err.response && err.response.status === 401) {
+        return res.redirect('/')
+      } else {
+        return res.status(500).send('SSR Error')
+      }
     }
 
     html = indexHTML.replace('{{APP}}', html)

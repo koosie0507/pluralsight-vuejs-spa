@@ -62,12 +62,11 @@ export default {
   data () {
     return {
       name: '',
-      password: '',
-      profile: {}
+      password: ''
     }
   },
   computed: {
-    ...mapGetters(['isAuthenticated'])
+    ...mapGetters(['isAuthenticated', 'profile'])
   },
   methods: {
     ...mapActions({

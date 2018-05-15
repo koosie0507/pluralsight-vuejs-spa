@@ -5,7 +5,8 @@ import postsModule from './posts'
 
 Vue.use(Vuex)
 const state = {
-  isAuthenticated: false
+  isAuthenticated: false,
+  profile: {}
 }
 
 const store = new Vuex.Store({
@@ -16,6 +17,9 @@ const store = new Vuex.Store({
   getters: {
     isAuthenticated: state => {
       return state.isAuthenticated
+    },
+    profile: state => {
+      return state.profile
     }
   },
   actions: {
@@ -39,6 +43,7 @@ const store = new Vuex.Store({
         window.localStorage.setItem('tokenExpiration', null)
       }
       state.isAuthenticated = false
+      state.profile = {}
     },
     login (state, data) {
       if (typeof window !== 'undefined') {
@@ -46,6 +51,12 @@ const store = new Vuex.Store({
         window.localStorage.setItem('tokenExpiration', data.expiration)
       }
       state.isAuthenticated = true
+      state.profile = {
+        name: data.name,
+        email: data.email,
+        role: data.role,
+        sandwich: data.sandwich
+      }
     }
   }
 })
