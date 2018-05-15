@@ -12,7 +12,14 @@
 import Post from './Post.vue'
 import { mapGetters } from 'vuex'
 
+function fetchInitialData(store, route) {
+  return store.dispatch('postsModule/fetchPostsInCategory', route.params.id)
+}
+
 export default {
+  asyncData (store, route) {
+    return fetchInitialData(store, route)
+  },
   components: {
     'app-post': Post
   },
@@ -21,7 +28,7 @@ export default {
   },
   methods: {
     loadPosts () {
-      this.$store.dispatch('postsModule/fetchPostsInCategory', this.$route.params.id)
+      fetchInitialData(this.$store, this.$route)
     }
   },
   watch: {

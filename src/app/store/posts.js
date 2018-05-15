@@ -11,7 +11,7 @@ const getters = {
 
 const actions = {
   fetchPostsInCategory (context, category) {
-    appService.getPosts(category)
+    return appService.getPosts(category)
       .then(data => context.commit('updatePosts', {category, posts: data}))
   }
 }
