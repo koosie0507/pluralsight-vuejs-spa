@@ -3,7 +3,7 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin')
 
 const config = {
   entry: {
-    app: path.resolve(__dirname, '../src/client/client-entry.js')
+    app: path.resolve(__dirname, '../src/client-entry.js')
   },
   module: {
     rules: [
