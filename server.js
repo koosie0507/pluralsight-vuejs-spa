@@ -25,8 +25,8 @@ app.get('*', function (req, res) {
     if (err) {
       return res.status(500).send('SSR Error')
     }
-    console.log(html)
-    res.write(indexHTML)
+
+    res.write(indexHTML.replace('{{APP}}', html))
     res.end()
   })
 })
