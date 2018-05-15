@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import appService from '../xhr-service'
+import appService from '../xhr/service'
 
 Vue.use(Vuex)
 const state = {

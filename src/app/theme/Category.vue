@@ -9,7 +9,7 @@
   </div>
 </template>
 <script>
-import appService from '../xhr-service'
+import appService from '../xhr/service'
 import Post from './Post.vue'
 
 export default {
