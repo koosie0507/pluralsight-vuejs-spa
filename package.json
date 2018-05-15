@@ -5,7 +5,10 @@
   "scripts": {
     "start": "node ./server.js",
     "test": "karma start test/unit/karma.config.js --single-run",
-    "build": "webpack --config ./build/webpack.base.config.js"
+    "build:client": "webpack --config ./build/webpack.client.config.js --progress --hide-modules",
+    "build:server": "webpack --config ./build/webpack.server.config.js --progress --hide-modules",
+    "build": "rimraf ./dist && npm run build:client && npm run build:server",
+    "start:prod": "corssenv NODE_ENV=production npm run start"
   },
   "keywords": [],
   "author": "Deployment Officer <no-reply@netmatch.nl> (http://www.netmatch.nl)",
