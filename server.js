@@ -6,6 +6,7 @@ const path = require('path')
 const routes = require('./src/api/routes')
 const { createBundleRenderer } = require('vue-server-renderer')
 const serialize = require('serialize-javascript')
+const isProd = typeof process.env.NODE_ENV !== 'undefined' && process.env.NODE_ENV === 'production'
 
 const indexHTML = (function readIndexHtmlFile () {
   return fs.readFileSync(path.resolve(__dirname, './index.html'), 'utf-8')
@@ -13,13 +14,19 @@ const indexHTML = (function readIndexHtmlFile () {
 
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
-app.use('/dist', express.static(path.resolve(__dirname, './dist')))
+
+const publicStaticFilePath = isProd ? '/' : '/dist'
+app.use(publicStaticFilePath, express.static(path.resolve(__dirname, './dist')))
 
 let renderer = { renderToString: function () {} }
-
-require(path.resolve(__dirname, './build/dev-server'))(app, bundle => {
-  renderer = createBundleRenderer(bundle)
-})
+if (isProd) {
+  const bundlePath = path.resolve(__dirname, './dist/server/main.js')
+  renderer = createBundleRenderer(fs.readFileSync(bundlePath, 'utf-8'))
+} else {
+  require(path.resolve(__dirname, './build/dev-server'))(app, bundle => {
+    renderer = createBundleRenderer(bundle)
+  })
+}
 
 routes(app)
 
