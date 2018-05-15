@@ -79,6 +79,9 @@ export default {
           this.password = ''
         })
     }
+  },
+  created () {
+    this.$store.dispatch('getProfile')
   }
 }
 </script>

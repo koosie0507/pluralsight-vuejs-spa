@@ -9,6 +9,15 @@ const state = {
   profile: {}
 }
 
+function convertToClientProfile (data) {
+  return {
+    name: data.name,
+    email: data.email,
+    role: data.role,
+    sandwich: data.sandwich
+  }
+}
+
 const store = new Vuex.Store({
   modules: {
     postsModule
@@ -34,6 +43,12 @@ const store = new Vuex.Store({
             resolve()
           })
       })
+    },
+    getProfile (context) {
+      if (context.state.isAuthenticated) {
+        return appService.getProfile()
+          .then(data => context.commit('updateProfile', data))
+      }
     }
   },
   mutations: {
@@ -51,12 +66,10 @@ const store = new Vuex.Store({
         window.localStorage.setItem('tokenExpiration', data.expiration)
       }
       state.isAuthenticated = true
-      state.profile = {
-        name: data.name,
-        email: data.email,
-        role: data.role,
-        sandwich: data.sandwich
-      }
+      state.profile = convertToClientProfile(data)
+    },
+    updateProfile (state, data) {
+      state.profile = convertToClientProfile(data)
     }
   }
 })
@@ -67,6 +80,7 @@ if (typeof window !== 'undefined') {
     let unixTimestamp = new Date().getTime() / 1000
     if (expiration !== null && parseInt(expiration) - unixTimestamp > 0) {
       store.state.isAuthenticated = true
+      store.dispatch('getProfile')
     }
   })
 }
