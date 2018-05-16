@@ -4,12 +4,16 @@
   "description": "",
   "scripts": {
     "start": "node ./server.js",
-    "dev": "rimraf ./dist && cross-env NODE_ENV=development npm start",
+    "clean": "rimraf ./dist",
+    "dev": "npm run clean && cross-env NODE_ENV=development npm start",
     "test": "karma start test/unit/karma.config.js --single-run",
     "build:client": "webpack --config ./build/webpack.client.config.js --progress --hide-modules",
+    "build:client:prod": "cross-env NODE_ENV=production webpack --config ./build/webpack.client.config.js --progress --hide-modules",
     "build:server": "webpack --config ./build/webpack.server.config.js --progress --hide-modules",
-    "build": "rimraf ./dist && npm run build:client && npm run build:server",
-    "start:prod": "cross-env NODE_ENV=production npm run start"
+    "build:server:prod": "cross-env NODE_ENV=production webpack --config ./build/webpack.server.config.js --progress --hide-modules",
+    "build": "npm run clean && npm run build:client && npm run build:server",
+    "build:prod": "npm run clean && npm run build:client:prod && npm run build:server:prod",
+    "start:prod": "npm run build:prod && cross-env NODE_ENV=production npm run start"
   },
   "keywords": [],
   "author": "Deployment Officer <no-reply@netmatch.nl> (http://www.netmatch.nl)",

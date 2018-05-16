@@ -3,6 +3,7 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const MiniCssExtract = require('mini-css-extract-plugin')
 
 const config = {
+  mode: 'development',
   entry: {
     app: path.resolve(__dirname, '../src/client-entry.js')
   },
