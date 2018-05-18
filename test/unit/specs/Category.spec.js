@@ -21,7 +21,7 @@ describe('Category.vue', () => {
         { path: '/', component: Category }
       ]
     })
-    mock.onGet('http://localhost:3000/api/posts?category=undefined').reply(200, [])
+    mock.onGet('/api/posts?category=undefined').reply(200, [])
     const vm = new Vue({
       el: document.createElement('div'),
       router,
